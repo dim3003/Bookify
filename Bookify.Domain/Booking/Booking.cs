@@ -1,9 +1,10 @@
 ﻿using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
-using Bookify.Domain.Booking.Event;
+using Bookify.Domain.Bookings.Event;
+using Bookify.Domain.Bookings.Events;
 using Bookify.Domain.Shared;
 
-namespace Bookify.Domain.Booking;
+namespace Bookify.Domain.Bookings;
 
 public class Booking : Entity
 {
@@ -89,7 +90,7 @@ public class Booking : Entity
     {
         if(Status != BookingStatus.Reserved)
         {
-            return Result.Failure(BookingErrors.NotPending);
+            return Result.Failure(BookingErrors.NotReserved);
         }
 
         Status = BookingStatus.Confirmed;

@@ -1,6 +1,6 @@
 ﻿using Bookify.Domain.Shared;
 
-namespace Bookify.Domain.Booking;
+namespace Bookify.Domain.Bookings;
 
 public record PricingDetails(
     Money PriceForPeriod,
