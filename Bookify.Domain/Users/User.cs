@@ -4,13 +4,13 @@ using Bookify.Domain.Users.Events;
 namespace Bookify.Domain.Users;
 public sealed class User : Entity
 {
-    public User(Guid id, Firstname firstname, LastName lastName, Email email) : 
-        base(id) 
-    { 
+    public User(Guid id, Firstname firstname, LastName lastName, Email email) :
+        base(id)
+    {
         Firstname = firstname;
         Lastname = lastName;
         Email = email;
-    } 
+    }
 
     public Firstname Firstname { get; set; }
 

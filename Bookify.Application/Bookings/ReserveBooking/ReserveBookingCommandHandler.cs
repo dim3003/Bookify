@@ -4,7 +4,6 @@ using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
 using Bookify.Domain.Users;
-using System.Runtime.CompilerServices;
 
 namespace Bookify.Application.Bookings.ReserveBooking;
 
@@ -37,7 +36,7 @@ internal sealed class ReserveBookingCommandHandler : ICommandHandler<ReserveBook
     {
         var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
 
-        if(user is null)
+        if (user is null)
         {
             return Result.Failure<Guid>(UserErrors.NotFound);
         }
@@ -47,7 +46,8 @@ internal sealed class ReserveBookingCommandHandler : ICommandHandler<ReserveBook
         if (apartment is null)
         {
             return Result.Failure<Guid>(ApartmentErrors.NotFound);
-        };
+        }
+        ;
 
         var duration = DateRange.Create(request.StartDate, request.EndDate);
 

@@ -10,7 +10,7 @@ public class Booking : Entity
 {
     private Booking(
         Guid id,
-        Guid apartmentId, 
+        Guid apartmentId,
         Guid userId,
         DateRange duration,
         Money priceForPeriod,
@@ -88,7 +88,7 @@ public class Booking : Entity
 
     public Result Confirm(DateTime utcNow)
     {
-        if(Status != BookingStatus.Reserved)
+        if (Status != BookingStatus.Reserved)
         {
             return Result.Failure(BookingErrors.NotReserved);
         }

@@ -12,7 +12,7 @@ public sealed class BookingResponse
 
     public decimal PriceAmount { get; init; }
 
-    public string PriceCurrency {  get; init; }
+    public string PriceCurrency { get; init; }
 
     public decimal CleaningFeeAmount { get; init; }
 
