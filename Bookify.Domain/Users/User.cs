@@ -4,23 +4,23 @@ using Bookify.Domain.Users.Events;
 namespace Bookify.Domain.Users;
 public sealed class User : Entity
 {
-    public User(Guid id, Firstname firstname, LastName lastName, Email email) :
+    public User(Guid id, FirstName firstname, LastName lastname, Email email) :
         base(id)
     {
-        Firstname = firstname;
-        Lastname = lastName;
+        FirstName = firstname;
+        LastName = lastname;
         Email = email;
     }
 
-    public Firstname Firstname { get; set; }
+    public FirstName FirstName { get; set; }
 
-    public LastName Lastname { get; set; }
+    public LastName LastName { get; set; }
 
     public Email Email { get; set; }
 
-    public static User Create(Firstname firstName, LastName lastName, Email email)
+    public static User Create(FirstName firstName, LastName lastname, Email email)
     {
-        var user = new User(Guid.NewGuid(), firstName, lastName, email);
+        var user = new User(Guid.NewGuid(), firstName, lastname, email);
 
         user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
