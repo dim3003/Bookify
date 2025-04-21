@@ -25,7 +25,7 @@ public sealed class Apartment : Entity
     }
 
     private Apartment()
-    { 
+    {
     }
 
     public Name Name { get; private set; }
