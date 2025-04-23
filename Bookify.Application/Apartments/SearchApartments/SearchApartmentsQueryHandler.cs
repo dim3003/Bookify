@@ -44,7 +44,7 @@ internal sealed class SearchApartmentsQueryHandler
                 a.address_state AS State,
                 a.address_zip_code AS ZipCode,
                 a.address_city AS City,
-                a.address_street AS Street,
+                a.address_street AS Street
             FROM apartments AS a
             WHERE NOT EXISTS
             (
@@ -55,6 +55,7 @@ internal sealed class SearchApartmentsQueryHandler
                     b.duration_start <=  @EndDate AND
                     b.duration_end <= @StartDate AND
                     b.status = ANY(@ActiveBookingStatuses)
+            )
             """;
 
         var apartments = await connection
