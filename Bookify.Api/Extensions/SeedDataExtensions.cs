@@ -40,8 +40,8 @@ public static class SeedDataExtensions
 
         const string sql = """
             INSERT INTO public.apartments
-            (id, name, description, country, state, zip_code, city, street_address, price_amount, price_currency, cleaning_fee_amount, cleaning_fee_currency, amenities, last_booked_on)
-            VALUES(@Id, @Name, @Description, @Country, @State, @ZipCode, @City, @StreetAddress, @PriceAmount, @PriceCurrency, @CleaningFeeAmount, @CleaningFeeCurrency, @Amenities, @LastBookedOn)
+            (id, name, description, address_country, address_state, address_zip_code, address_city, address_street, price_amount, price_currency, cleaning_fee_amount, cleaning_fee_currency, amenities, last_booked_on_utc)
+            VALUES(@Id, @Name, @Description, @Country, @State, @ZipCode, @City, @Street, @PriceAmount, @PriceCurrency, @CleaningFeeAmount, @CleaningFeeCurrency, @Amenities, @LastBookedOn)
             """;
 
         connection.Execute(sql, apartments);
