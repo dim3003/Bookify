@@ -31,7 +31,7 @@ internal sealed class AuthenticationService : IAuthenticationService
         };
 
         var response = await _httpClient.PostAsJsonAsync(
-            "user",
+            "users",
             userRepresentationModel,
             cancellationToken);
 

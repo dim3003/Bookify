@@ -3,7 +3,7 @@
 namespace Bookify.Application.Users.RegisterUser;
 
 public sealed record RegisterUserCommand(
-    string Email,
     string FirstName,
     string LastName,
+    string Email,
     string Password) : ICommand<Guid>;
