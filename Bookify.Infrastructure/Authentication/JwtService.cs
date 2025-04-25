@@ -1,8 +1,8 @@
 ﻿using Bookify.Application.Abstractions.Authentication;
 using Bookify.Domain.Abstractions;
 using Bookify.Infrastructure.Authentication.Models;
-using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
+using System.Net.Http.Json;
 
 namespace Bookify.Infrastructure.Authentication;
 
@@ -22,8 +22,8 @@ internal sealed class JwtService : IJwtService
     }
 
     public async Task<Result<string>> GenerateAccessTokenAsync(
-        string email, 
-        string password, 
+        string email,
+        string password,
         CancellationToken cancellationToken = default)
     {
         try

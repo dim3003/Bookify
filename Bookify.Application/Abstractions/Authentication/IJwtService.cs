@@ -6,6 +6,6 @@ public interface IJwtService
 {
     Task<Result<string>> GenerateAccessTokenAsync(
         string email,
-        string password, 
+        string password,
         CancellationToken cancellationToken = default);
 }

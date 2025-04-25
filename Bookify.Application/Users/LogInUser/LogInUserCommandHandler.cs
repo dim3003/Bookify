@@ -22,7 +22,7 @@ class LogInUserCommandHandler : IRequestHandler<LogInUserCommand, Result<AccessT
             request.Email,
             request.Password,
             cancellationToken);
-        
+
         if (result.IsFailure)
         {
             return Result.Failure<AccessTokenResponse>(UserErrors.InvalidCredentials);
