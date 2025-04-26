@@ -17,7 +17,7 @@ class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {
         var policy = await base.GetPolicyAsync(policyName);
 
-        if (policy == null)
+        if (policy is not null)
         {
             return policy;
         }

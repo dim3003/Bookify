@@ -29,10 +29,10 @@ internal sealed class AuthorizationService
     public async Task<HashSet<string>> GetPermissionsForUserAsync(string identityId)
     {
         var permissions = await _dbContext.Set<User>()
-            .Where(user => user.IdentityId == identityId)
-            .SelectMany(user => user.Roles.Select(role => role.Permissions))
+            .Where(u => u.IdentityId == identityId)
+            .SelectMany(u => u.Roles.Select(r => r.Permissions))
             .FirstAsync();
-        
+
         var permissionsSet = permissions.Select(p => p.Name).ToHashSet();
 
         return permissionsSet;
