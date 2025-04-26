@@ -23,7 +23,7 @@ internal sealed class CustomClaimsTransformation : IClaimsTransformation
             return principal;
         }
 
-        using var scope = _serviceProvider.CreateScope();   
+        using var scope = _serviceProvider.CreateScope();
 
         var authorizationService = scope.ServiceProvider.GetRequiredService<AuthorizationService>();
 
