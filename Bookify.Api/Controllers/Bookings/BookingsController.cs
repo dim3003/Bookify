@@ -27,7 +27,7 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> ReserveBookking(
+    public async Task<IActionResult> ReserveBooking(
         ReserveBookingRequest request,
         CancellationToken cancellationToken)
     {
