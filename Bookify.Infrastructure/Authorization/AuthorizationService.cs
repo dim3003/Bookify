@@ -33,8 +33,6 @@ internal sealed class AuthorizationService
             .SelectMany(u => u.Roles.Select(r => r.Permissions))
             .FirstAsync();
 
-        var permissionsSet = permissions.Select(p => p.Name).ToHashSet();
-
-        return permissionsSet;
+        return permissions.Select(p => p.Name).ToHashSet();
     }
 }
