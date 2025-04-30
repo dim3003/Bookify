@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bookify.Api.Controllers.Users;
 
 [ApiVersion(ApiVersions.V1)]
-[ApiVersion(ApiVersions.V2)]
 [Route("api/v{version:apiVersion}/users")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -22,9 +21,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("me")]
-    [MapToApiVersion(ApiVersions.V1)]
     [HasPermission(Permissions.UsersRead)]
-    public async Task<IActionResult> GetLoggedInUserV1(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetLoggedInUser(CancellationToken cancellationToken)
     {
         var query = new GetLoggedInUserQuery();
 
@@ -32,19 +30,6 @@ public class UsersController : ControllerBase
 
         return Ok(result.Value);
     }
-
-    [HttpGet("me")]
-    [MapToApiVersion(ApiVersions.V2)]
-    [HasPermission(Permissions.UsersRead)]
-    public async Task<IActionResult> GetLoggedInUserV2(CancellationToken cancellationToken)
-    {
-        var query = new GetLoggedInUserQuery();
-
-        var result = await _sender.Send(query, cancellationToken);
-
-        return Ok(result.Value);
-    }
-
 
     [AllowAnonymous]
     [HttpPost("register")]
