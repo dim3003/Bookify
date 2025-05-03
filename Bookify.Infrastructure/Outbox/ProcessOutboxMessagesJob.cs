@@ -1,5 +1,6 @@
 ﻿using Bookify.Application.Abstractions.Clock;
 using Bookify.Application.Abstractions.Data;
+using Bookify.Domain.Abstractions;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -45,7 +46,37 @@ internal sealed class ProcessOutboxMessagesJob : IJob
         using var transaction = connection.BeginTransaction();
 
         var outboxMessages = await GetOutboxMessagesAsync(connection, transaction);
+
+        foreach (var outboxMessage in outboxMessages)
+        {
+            Exception? exception = null;
+
+            try
+            {
+                var domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
+                    outboxMessage.Content,
+                    JsonSerializerSettings)!;
+
+                await _publisher.Publish(domainEvent, context.CancellationToken);
+            }
+            catch (Exception caughtException)
+            {
+                _logger.LogError(
+                    caughtException,
+                    "Exception while processing outbox message {OutboxMessageId}",
+                    outboxMessage.Id);
+
+                exception = caughtException;
+            }
+
+            await UpdateOutboxMessageAsync(connection, transaction, outboxMessage, exception);
+        }
+
+        transaction.Commit();
+
+        _logger.LogInformation("Completed processing outbox messages");
     }
+
 
     private async Task<IEnumerable<OutboxMessageResponse>> GetOutboxMessagesAsync(
         IDbConnection connection,
@@ -62,6 +93,29 @@ internal sealed class ProcessOutboxMessagesJob : IJob
 
         var outboxMessages = await connection.QueryAsync<OutboxMessageResponse>(sql, transaction: transaction);
         return outboxMessages.ToList();
+    }
+
+    private async Task UpdateOutboxMessageAsync(
+        IDbConnection connection,
+        IDbTransaction transaction,
+        OutboxMessageResponse outboxMessage,
+        Exception? exception)
+    {
+        const string sql = @"
+                UPDATE outbox_messages
+                SET processed_on_utc = @ProcessedOnUtc,
+                error = @Error
+                WHERE id = @Id";
+
+        await connection.ExecuteAsync(
+            sql,
+            new
+            {
+                outboxMessage.Id,
+                ProcessedOnUtc = _dateTimeProvider.UtcNow,
+                Error = exception?.ToString()
+            },
+            transaction: transaction);
     }
 
     internal sealed record OutboxMessageResponse(Guid Id, string Content);
