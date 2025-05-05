@@ -23,6 +23,9 @@ EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.Domain.UnitTests", "..\Bookify.Domain.UnitTests\Bookify.Domain.UnitTests.csproj", "{EE1B4031-38B3-478C-B34B-5E085BA5040A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{335E0721-A36F-4970-85DE-4F87F3D62DAE} = {335E0721-A36F-4970-85DE-4F87F3D62DAE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

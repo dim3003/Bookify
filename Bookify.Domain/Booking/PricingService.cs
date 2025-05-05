@@ -35,6 +35,8 @@ public class PricingService
 
         var totalPrice = Money.Zero(currency);
 
+        totalPrice += priceForPeriod;
+
         if (!apartment.CleaningFee.IsZero())
         {
             totalPrice += apartment.CleaningFee;
