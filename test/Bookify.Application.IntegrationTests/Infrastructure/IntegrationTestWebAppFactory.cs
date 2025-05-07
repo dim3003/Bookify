@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Bookify.Application.Abstractions.Data;
+using Bookify.Infrastructure;
+using Bookify.Infrastructure.Authentication;
+using Bookify.Infrastructure.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.Keycloak;
 using Testcontainers.PostgreSql;
 using Testcontainers.Redis;
 
+
 namespace Bookify.Application.IntegrationTests.Infrastructure;
 
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
+public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
@@ -27,11 +37,46 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
         .WithCommand("--import-realm")
         .Build();
 
+    public async Task InitializeAsync()
+    {
+        await _dbContainer.StartAsync();
+        await _redisContainer.StartAsync();
+        await _keycloakContainer.StartAsync();
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureTestsServices(services =>
+        builder.ConfigureTestServices(services =>
         {
-            // Add any test-specific services here
+            services.RemoveAll<DbContextOptions<ApplicationDbContext>>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options
+                .UseNpgsql(_dbContainer.GetConnectionString())
+                .UseSnakeCaseNamingConvention());
+
+            services.RemoveAll(typeof(ISqlConnectionFactory));
+
+            services.AddSingleton<ISqlConnectionFactory>(_ =>
+                new SqlConnectionFactory(_dbContainer.GetConnectionString()));
+
+            services.Configure<RedisCacheOptions>(redisCacheOptions =>
+                redisCacheOptions.Configuration = _redisContainer.GetConnectionString());
+
+            var keycloakAddress = _keycloakContainer.GetBaseAddress();
+
+            services.Configure<KeycloakOptions>(o =>
+            {
+                o.AdminUrl = $"{keycloakAddress}admin/realms/bookify";
+                o.TokenUrl = $"{keycloakAddress}realms/bookify/protocol/openid-connect/token";
+            });
+
         });
+    }
+
+    public new async Task DisposeAsync()
+    {
+        await _dbContainer.StopAsync();
+        await _redisContainer.StopAsync();
+        await _keycloakContainer.StopAsync();
     }
 }
