@@ -32,7 +32,7 @@ public class Booking : Entity
         CreatedOnUtc = createdOnUtc;
     }
 
-    public Booking()
+    private Booking()
     {
     }
 
