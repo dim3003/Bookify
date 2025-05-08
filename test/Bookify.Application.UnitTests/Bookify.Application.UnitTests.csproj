@@ -18,6 +18,7 @@
 
   <PropertyGroup>
     <AssemblyName>Bookify.Application.UnitTests</AssemblyName>
+    <RunSettingsFilePath>C:\Users\DimitriAndre\source\repos\Bookify\test\Bookify.Application.UnitTests\bin\Debug\net9.0\fine-code-coverage\coverage-tool-output\Bookify.Application.UnitTests-fcc-mscodecoverage-generated.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
   <ItemGroup>

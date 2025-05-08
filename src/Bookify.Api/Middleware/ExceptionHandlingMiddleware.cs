@@ -1,5 +1,6 @@
 ﻿using Bookify.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Bookify.Api.Middleware;
 
@@ -48,8 +49,15 @@ public class ExceptionHandlingMiddleware
 
     private ExceptionDetails GetExceptionDetails(Exception exception)
     {
+
         return exception switch
         {
+            HttpRequestException httpEx when httpEx.StatusCode == HttpStatusCode.BadRequest => new ExceptionDetails(
+                StatusCodes.Status400BadRequest,
+                "HttpError",
+                "Bad Request",
+                httpEx.Message,
+                null),
             ValidationException validationException => new ExceptionDetails(
                 StatusCodes.Status400BadRequest,
                 "ValidationFailure",

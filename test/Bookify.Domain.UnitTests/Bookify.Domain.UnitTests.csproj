@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RunSettingsFilePath>C:\Users\DimitriAndre\source\repos\Bookify\test\Bookify.Domain.UnitTests\bin\Debug\net9.0\fine-code-coverage\coverage-tool-output\Bookify.Domain.UnitTests-fcc-mscodecoverage-generated.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
   <ItemGroup>
